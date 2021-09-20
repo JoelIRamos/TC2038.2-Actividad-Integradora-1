@@ -81,7 +81,7 @@ int main(){
     for (int i = 0; i < N; i++){
         int iPos;
         string sPalindromo;
-        algoritmos :: manacher(sVTransmissions[i]); //ToDo: Hacer que manacher devuelva tambien la posicion del palindromo
+        algoritmos :: manacher(sVTransmissions[i], sPalindromo, iPos); //ToDo: Hacer que manacher devuelva tambien la posicion del palindromo
         ifChecking << "Transmission" << i+1 << ".txt ==> Posición: " << iPos << endl; 
         ifChecking << sPalindromo << endl;
         ifChecking << "----" << endl;
@@ -91,6 +91,7 @@ int main(){
     
 
     // *Substring más largo
+    // ToDo: Substring entre los 3 archivos?
 
 
 

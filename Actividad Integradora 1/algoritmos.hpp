@@ -24,7 +24,6 @@ namespace algoritmos{
         return lpsv;
     }
 
-    // O(n)
     vector<int> kmp(string texto, string patron){
         vector<int> posMatch;
         vector<int> lpsv = lps(patron);
@@ -54,7 +53,7 @@ namespace algoritmos{
         return posMatch;
     }
 
-    string manacher(string texto){
+    string manacher(string texto, string& palindromo, int& posicion){
         string T = "";
         int n=texto.length();
         for (int i=0; i<n; i++){
@@ -107,7 +106,62 @@ namespace algoritmos{
         for (int i=inicio; i<(inicio+maxLong); i++){
             salida += texto[i];
         }
-        return salida;
+        // return salida;
+    }
+
+    void longestSubString(string str1,string str2, string& subSTR){
+        int iN1 = str1.length();
+        int iN2 = str2.length();
+        int iMax = 0;
+        vector <int> iAux(iN2);
+        vector <string> sAux(iN2);
+        vector<vector <int> > iLCS (iN1, iAux);
+        vector<vector <string> > sLCS (iN1, sAux);
+
+        // Primer Columna
+        for (int i=0; i<iN1; i++){
+            if (str1[i] == str2[0]){
+                iLCS[i][0] = 1;
+                iMax = 1;
+                
+                sLCS[i][0] += str1[i];
+                subSTR = str1[i];
+            } else {
+                iLCS[i][0] = 0;
+                sLCS[i][0] = "";
+            }
+        }
+
+        // Primer Renglon
+        for (int j=0; j<iN2; j++){
+            if (str2[j] == str1[0]){
+                iLCS[0][j] = 1;
+                iMax = 1;
+
+                sLCS[0][j] += str2[j];
+                subSTR = str2[j];
+            } else {
+                iLCS[0][j] = 0;
+                sLCS[0][j] = "";
+            }
+        }
+
+        // Resto de la matriz
+        for (int i=1; i<iN1; i++){
+            for (int j=1; j<iN2; j++){
+                if (str1[i] == str2[j]){
+                    iLCS[i][j] = iLCS[i-1][j-1] + 1;
+                    sLCS[i][j] = sLCS[i-1][j-1] + str1[i];
+                    if (iLCS[i][j] > iMax) {
+                        iMax = iLCS[i][j];
+                        subSTR = sLCS[i][j];
+                    }
+                } else {
+                    iLCS[i][j] = 0;
+                    sLCS[i][j] = "";
+                }
+            }
+        }
     }
 
 }
