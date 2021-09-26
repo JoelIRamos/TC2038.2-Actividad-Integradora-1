@@ -3,6 +3,7 @@ namespace algoritmos{
     #include<string>
     using namespace std;
 
+// ToDo: Complejidad
     vector<int> lps(string patron){
         int n = patron.length();
         vector<int> lpsv(n,0);
@@ -24,6 +25,7 @@ namespace algoritmos{
         return lpsv;
     }
 
+// ToDo: Complejidad
     vector<int> kmp(string texto, string patron){
         vector<int> posMatch;
         vector<int> lpsv = lps(patron);
@@ -53,6 +55,7 @@ namespace algoritmos{
         return posMatch;
     }
 
+    // ToDo: Complejidad
     string manacher(string texto, string& palindromo, int& posicion){
         string T = "";
         int n=texto.length();
@@ -109,6 +112,7 @@ namespace algoritmos{
         // return salida;
     }
 
+// ToDo: Complejidad
     void longestSubString(string str1,string str2, string& subSTR){
         int iN1 = str1.length();
         int iN2 = str2.length();
