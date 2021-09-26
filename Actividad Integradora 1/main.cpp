@@ -75,7 +75,7 @@ void palindromo(ofstream& ifChecking, vector<string> sVTransmissions){
     for (int i = 0; i < N; i++){
         int iPos;
         string sPalindromo;
-        algoritmos :: manacher(sVTransmissions[i], sPalindromo, iPos); //ToDo: Hacer que manacher devuelva tambien la posicion del palindromo
+        algoritmos :: manacher(sVTransmissions[i], sPalindromo, iPos);
         ifChecking << "Transmission" << i+1 << ".txt ==> Posición: " << iPos << endl; 
         ifChecking << sPalindromo << endl;
         ifChecking << "----" << endl;

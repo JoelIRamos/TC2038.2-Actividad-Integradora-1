@@ -56,7 +56,7 @@ namespace algoritmos{
     }
 
     // ToDo: Complejidad
-    string manacher(string texto, string& palindromo, int& posicion){
+    void manacher(string texto, string& palindromo, int& posicion){
         string T = "";
         int n=texto.length();
         for (int i=0; i<n; i++){
@@ -109,7 +109,9 @@ namespace algoritmos{
         for (int i=inicio; i<(inicio+maxLong); i++){
             salida += texto[i];
         }
-        // return salida;
+
+        palindromo = salida;
+        posicion = inicio;
     }
 
 // ToDo: Complejidad
