@@ -58,12 +58,11 @@ void coincidencias(ofstream& ifChecking, vector<string> codigosMaliciosos, vecto
 
             // Encontrar las coincidencias
             vector<int> posMatch = algoritmos :: kmp(sVTransmissions[j], codigosMaliciosos[i]);
-            // //cout << posMatch.size() << endl;
+
             // Imprimirlas en el achivo 
             ifChecking << "Transmission" << j+1 << ".txt ==> " << posMatch.size() << " veces" << endl;
             for (int k=0; k<posMatch.size(); k++){
                 ifChecking << posMatch[k] << " ";
-                // //cout << posMatch[i] << " ";
             }
             ifChecking << endl;
         }
@@ -101,14 +100,6 @@ int main(){
 
         // Leer archivos de transmision
         sVTransmissions = leerTransmisiones();
-
-        /*
-        // for (int i = 0; i < sVTransmissions.size(); i++)
-        // {
-        //     cout << sVTransmissions[i] << endl;
-        // }
-        */
-        
 
         // Abrir el archivo de Salida
         ifChecking.open("checking.txt", ios::in);
