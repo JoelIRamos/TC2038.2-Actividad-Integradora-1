@@ -33,7 +33,7 @@ vector<string> leerTransmisiones(){
 
     for (int i=0; i<N; i++){
         // Leer todo el codigo de cada archivo y ponerlo en sVTransmissions
-        ifVTransmissions[i].open("transmission" + to_string(i+1), ios::out);
+        ifVTransmissions[i].open("transmission" + to_string(i+1) + ".txt", ios::out);
         if (ifVTransmissions[i].fail()){ // Si falla, terminar el programa
             throw runtime_error("Hubo un Error al cargar el archivo transmission" + to_string(i+1) + ".txt");
 
@@ -58,11 +58,12 @@ void coincidencias(ofstream& ifChecking, vector<string> codigosMaliciosos, vecto
 
             // Encontrar las coincidencias
             vector<int> posMatch = algoritmos :: kmp(sVTransmissions[j], codigosMaliciosos[i]);
-
+            // //cout << posMatch.size() << endl;
             // Imprimirlas en el achivo 
             ifChecking << "Transmission" << j+1 << ".txt ==> " << posMatch.size() << " veces" << endl;
             for (int k=0; k<posMatch.size(); k++){
-                ifChecking << posMatch[i] << " ";
+                ifChecking << posMatch[k] << " ";
+                // //cout << posMatch[i] << " ";
             }
             ifChecking << endl;
         }
@@ -83,6 +84,7 @@ void palindromo(ofstream& ifChecking, vector<string> sVTransmissions){
 
     ifChecking << "============" << endl;
 }
+
 void substring(ofstream& ifChecking, vector<string> sVTransmissions){
     // ToDo: Substring entre los 3 archivos
 }
@@ -100,10 +102,18 @@ int main(){
         // Leer archivos de transmision
         sVTransmissions = leerTransmisiones();
 
+        /*
+        // for (int i = 0; i < sVTransmissions.size(); i++)
+        // {
+        //     cout << sVTransmissions[i] << endl;
+        // }
+        */
+        
+
         // Abrir el archivo de Salida
-        ifChecking.open("cheking2.txt", ios::in);
+        ifChecking.open("checking.txt", ios::in);
         if (ifChecking.fail()){ // Si falla, terminar el programa
-            throw runtime_error("Hubo un Error al cargar el archivo cheking.txt");
+            throw runtime_error("Hubo un Error al cargar el archivo checking.txt");
         }
     }
     catch(const exception& e){
