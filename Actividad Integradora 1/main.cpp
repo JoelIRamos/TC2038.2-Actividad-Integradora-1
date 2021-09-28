@@ -7,17 +7,18 @@
 
 using namespace std;
 
+// Funcion para leer el archivo mcode.txt y regresar un vector con los strings
 // Complejidad O(n)
 vector<string> leerCodigos(){
     vector<string> codigosMaliciosos;
     ifstream mcode("mcode.txt");
     
-    if (mcode.fail()){ // Si fallo, terminar programa
+    if (mcode.fail()){ // Si fallo, lanzar una exepción
         throw runtime_error("Hubo un Error al cargar el archivo mcode.txt");
     }
 
     string smcode;
-    while (!mcode.eof()){
+    while (!mcode.eof()){ // Mientras todavia haya codigos
         mcode >> smcode;
         codigosMaliciosos.push_back(smcode);
     }
@@ -26,28 +27,32 @@ vector<string> leerCodigos(){
     return codigosMaliciosos;
 }
 
-
+// Funcion para leer los archivos de transmisiones y regresar un vector con los textos
+// Complejidad: O(1)  - (dado que N es constante de valor 3)
 vector<string> leerTransmisiones(){
-    vector<ifstream> ifVTransmissions(N);
     vector<string> sVTransmissions(N);
 
     for (int i=0; i<N; i++){
-        // Leer todo el codigo de cada archivo y ponerlo en sVTransmissions
-        ifVTransmissions[i].open("transmission" + to_string(i+1) + ".txt", ios::out);
-        if (ifVTransmissions[i].fail()){ // Si falla, terminar el programa
+        ifstream ifTransmissions;
+
+        // Abrir el archivo de transmission(1, 2, ... N).txt
+        ifTransmissions.open("transmission" + to_string(i+1) + ".txt", ios::out);
+        if (ifTransmissions.fail()){ // Si falla, lanzar exepcion
             throw runtime_error("Hubo un Error al cargar el archivo transmission" + to_string(i+1) + ".txt");
 
         }
-        
-        sVTransmissions[i].assign(  (istreambuf_iterator<char>(ifVTransmissions[i])),     
+        // Leer todo el codigo del archivo y ponerlo en sVTransmissions[i]
+        sVTransmissions[i].assign(  (istreambuf_iterator<char>(ifTransmissions)),     
                                     (istreambuf_iterator<char>()));
 
-        ifVTransmissions[i].close();
+        ifTransmissions.close();
     }
 
     return sVTransmissions;
 }
 
+// Funcion para buscar todas las coincidencias de los archivos de transmision
+// Complejidad: O()
 void coincidencias(ofstream& ifChecking, vector<string> codigosMaliciosos, vector<string> sVTransmissions){
     // Para cada codigo
     for (int i = 0; i < codigosMaliciosos.size(); i++){
@@ -71,11 +76,18 @@ void coincidencias(ofstream& ifChecking, vector<string> codigosMaliciosos, vecto
     ifChecking << "==============" << endl;
 }
 
+// Funcion para buscar el palindromo mas grande de cada archivo de transmision
+// Complejidad: O()
 void palindromo(ofstream& ifChecking, vector<string> sVTransmissions){
+    // Para cada archivo de transmision
     for (int i = 0; i < N; i++){
         int iPos;
         string sPalindromo;
+
+        // Encontrar el palindromo
         algoritmos :: manacher(sVTransmissions[i], sPalindromo, iPos);
+
+        // Imprimirla en el archivo
         ifChecking << "Transmission" << i+1 << ".txt ==> Posición: " << iPos << endl; 
         ifChecking << sPalindromo << endl;
         ifChecking << "----" << endl;
@@ -84,6 +96,8 @@ void palindromo(ofstream& ifChecking, vector<string> sVTransmissions){
     ifChecking << "============" << endl;
 }
 
+// Funcion para encontrar el substring más largo de todos los archivos
+// Complejidad: O()
 void substring(ofstream& ifChecking, vector<string> sVTransmissions){
     // ToDo: Substring entre los 3 archivos
 }
@@ -106,8 +120,7 @@ int main(){
         if (ifChecking.fail()){ // Si falla, terminar el programa
             throw runtime_error("Hubo un Error al cargar el archivo checking.txt");
         }
-    }
-    catch(const exception& e){
+    } catch(const exception& e){ // Si hubo un fallo, terminar el programa
         cout << e.what() << endl;
         return 0;
     }
