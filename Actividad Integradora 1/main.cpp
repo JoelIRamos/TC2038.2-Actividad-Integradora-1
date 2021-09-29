@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <algorithm>
 #include <vector>
 #include <fstream>
 #include "algoritmos.hpp"
@@ -97,13 +98,33 @@ void palindromo(ofstream& ifChecking, vector<string> sVTransmissions){
 }
 
 // Funcion para encontrar el substring más largo de todos los archivos
-// Complejidad: O()
+// Complejidad: O(N)
 void substring(ofstream& ifChecking, vector<string> sVTransmissions){
     // ToDo: Substring entre los 3 archivos
+    vector<string> lcs(3);
+    algoritmos :: longestSubString(sVTransmissions[0], sVTransmissions[1], lcs[0]);
+    algoritmos :: longestSubString(sVTransmissions[0], sVTransmissions[2], lcs[1]);
+    algoritmos :: longestSubString(sVTransmissions[1], sVTransmissions[2], lcs[2]);
+
+    int max_index;
+    if (lcs[0].length() > lcs[1].length()) {
+        max_index = 0;
+    }
+    else if (lcs[0].length() > lcs[2].length()) {
+        max_index = 0;
+    }
+    else if (lcs[1].length() > lcs[2].length()) {
+        max_index = 1;
+    }
+    else {
+        max_index = 2;
+    }
+    ifChecking << "Substring más largo: " << lcs[max_index] << endl;
 }
 
 
 int main(){
+    cout << "Running " << endl;
     vector<string> codigosMaliciosos;
     vector<string> sVTransmissions(N);
     ofstream ifChecking;
@@ -136,5 +157,7 @@ int main(){
 
     // Cerrar el archivo de salida y termina el programa
     ifChecking.close();
+
+    cout << "Close " << endl;
     return 0;
 }

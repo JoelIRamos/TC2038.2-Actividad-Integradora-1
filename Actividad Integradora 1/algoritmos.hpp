@@ -1,5 +1,6 @@
 namespace algoritmos{
     #include<vector>
+    #include <algorithm>
     #include<string>
     using namespace std;
 
@@ -114,60 +115,45 @@ namespace algoritmos{
         posicion = inicio;
     }
 
-// ToDo: Complejidad
+// ToDo: Complejidad: O(m*n)
     void longestSubString(string str1,string str2, string& subSTR){
-        int iN1 = str1.length();
-        int iN2 = str2.length();
-        int iMax = 0;
-        vector <int> iAux(iN2);
-        vector <string> sAux(iN2);
-        vector<vector <int> > iLCS (iN1, iAux);
-        vector<vector <string> > sLCS (iN1, sAux);
-
-        // Primer Columna
-        for (int i=0; i<iN1; i++){
-            if (str1[i] == str2[0]){
-                iLCS[i][0] = 1;
-                iMax = 1;
-                
-                sLCS[i][0] += str1[i];
-                subSTR = str1[i];
-            } else {
-                iLCS[i][0] = 0;
-                sLCS[i][0] = "";
-            }
-        }
-
-        // Primer Renglon
-        for (int j=0; j<iN2; j++){
-            if (str2[j] == str1[0]){
-                iLCS[0][j] = 1;
-                iMax = 1;
-
-                sLCS[0][j] += str2[j];
-                subSTR = str2[j];
-            } else {
-                iLCS[0][j] = 0;
-                sLCS[0][j] = "";
-            }
-        }
-
-        // Resto de la matriz
-        for (int i=1; i<iN1; i++){
-            for (int j=1; j<iN2; j++){
-                if (str1[i] == str2[j]){
-                    iLCS[i][j] = iLCS[i-1][j-1] + 1;
-                    sLCS[i][j] = sLCS[i-1][j-1] + str1[i];
-                    if (iLCS[i][j] > iMax) {
-                        iMax = iLCS[i][j];
-                        subSTR = sLCS[i][j];
-                    }
-                } else {
-                    iLCS[i][j] = 0;
-                    sLCS[i][j] = "";
+        int m = 1000;
+        int n = 1000;
+        int LCS[m + 1][n + 1];
+        for (int i = 0; i <= m; i++) {
+            for (int j = 0; j <=  n; j++) {
+                if (i == 0 || j == 0) {
+                    LCS[i][j] = 0;
+                }
+                else if (str1[i - 1] == str2[j - 1]) {
+                    LCS[i][j] = LCS[i - 1][j - 1] + 1;
+                }
+                else {
+                    LCS[i][j] = max(LCS[i - 1][j], LCS[i][j - 1]);
                 }
             }
         }
+
+        // Lo pasamos a una cadena char
+        int index = LCS[m][n];
+        char lcs[index + 1];
+        lcs[index] = '\0';
+
+        int i = m, j = n;
+        while (i > 0 && j > 0) {
+            if (str1[i - 1] == str2[j - 1]) {
+                lcs[index - 1] = str1[i - 1];
+                i--; 
+                j--; 
+                index--;
+            }
+            else if (LCS[i - 1][j] > LCS[i][j - 1])
+                i--;
+            else
+                j--;
+        }
+        
+        subSTR = lcs;
     }
 
 }
