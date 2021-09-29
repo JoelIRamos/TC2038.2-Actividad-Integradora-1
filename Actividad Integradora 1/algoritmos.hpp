@@ -119,41 +119,32 @@ namespace algoritmos{
     void longestSubString(string str1,string str2, string& subSTR){
         int m = 1000;
         int n = 1000;
-        int LCS[m + 1][n + 1];
-        for (int i = 0; i <= m; i++) {
-            for (int j = 0; j <=  n; j++) {
-                if (i == 0 || j == 0) {
-                    LCS[i][j] = 0;
-                }
-                else if (str1[i - 1] == str2[j - 1]) {
-                    LCS[i][j] = LCS[i - 1][j - 1] + 1;
-                }
-                else {
-                    LCS[i][j] = max(LCS[i - 1][j], LCS[i][j - 1]);
+        int maxlen = 0;         // stores the max length of LCS
+        int endingIndex = m;    // stores the ending index of LCS in `X`
+    
+        int lookup[m + 1][n + 1];
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                lookup[i][j] = 0;
+            }
+        }
+    
+        // fill the lookup table in a bottom-up manner
+        for (int i = 1; i <= m; i++) {
+            for (int j = 1; j <= n; j++) {
+                // if the current character of `X` and `Y` matches
+                if (str1[i - 1] == str2[j - 1]) {
+                    lookup[i][j] = lookup[i - 1][j - 1] + 1;
+
+                    if (lookup[i][j] > maxlen) {
+                        maxlen = lookup[i][j];
+                        endingIndex = i;
+                    }
                 }
             }
         }
-
-        // Lo pasamos a una cadena char
-        int index = LCS[m][n];
-        char lcs[index + 1];
-        lcs[index] = '\0';
-
-        int i = m, j = n;
-        while (i > 0 && j > 0) {
-            if (str1[i - 1] == str2[j - 1]) {
-                lcs[index - 1] = str1[i - 1];
-                i--; 
-                j--; 
-                index--;
-            }
-            else if (LCS[i - 1][j] > LCS[i][j - 1])
-                i--;
-            else
-                j--;
-        }
-        
-        subSTR = lcs;
+    
+        subSTR = str1.substr(endingIndex - maxlen, maxlen);
     }
 
 }
