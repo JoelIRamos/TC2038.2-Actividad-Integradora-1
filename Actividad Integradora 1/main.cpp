@@ -99,11 +99,30 @@ void palindromo(ofstream& ifChecking, vector<string> sVTransmissions){
 // Funcion para encontrar el substring más largo de todos los archivos
 // Complejidad: O()
 void substring(ofstream& ifChecking, vector<string> sVTransmissions){
-    // ToDo: Substring entre los 3 archivos
+    string LCS;
+    string subStr1;
+    string subStr2;
+    int m = 0;
+    for (int i = 0; i < N; i++){
+        if (i+1 == N){
+            algoritmos :: longestSubString(sVTransmissions[0], sVTransmissions[i], subStr1);
+            algoritmos :: longestSubString(sVTransmissions[i], sVTransmissions[0], subStr2);
+        } else {
+            algoritmos :: longestSubString(sVTransmissions[i], sVTransmissions[i+1], subStr1);
+            algoritmos :: longestSubString(sVTransmissions[i+1], sVTransmissions[i], subStr2);
+        }
+        subStr1 = ((subStr1.length() > subStr2.length()) ? subStr1 : subStr2);
+        if (subStr1.length() > m){
+            m = subStr1.length();
+            LCS = subStr1;
+        }
+    }
+    ifChecking << LCS << endl;
 }
 
 
 int main(){
+    cout << "Running" << endl;
     vector<string> codigosMaliciosos;
     vector<string> sVTransmissions(N);
     ofstream ifChecking;
@@ -126,15 +145,19 @@ int main(){
     }
     
     // *Coincidencias
+    ifChecking << "Coincidences" << endl;
     coincidencias(ifChecking, codigosMaliciosos, sVTransmissions);
     
     // *Palindromo más grande
+    ifChecking << "Palindromes" << endl;
     palindromo(ifChecking, sVTransmissions);
     
     // *Substring más largo
+    ifChecking << "Longest Substring: ";
     substring(ifChecking, sVTransmissions);
 
     // Cerrar el archivo de salida y termina el programa
     ifChecking.close();
+    cout << "Exit" << endl;
     return 0;
 }
