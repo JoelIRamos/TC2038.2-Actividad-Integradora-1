@@ -1,3 +1,15 @@
+/*
+
+Actividad Integradora 1
+
+Erik Josías González Lucas A01424067
+Adrian Luevanos Castillo A00827701
+Joel Isaí Ramos Hernández A01245083
+
+29/09/2021
+
+*/
+
 #include <iostream>
 #include <string>
 #include <vector>
