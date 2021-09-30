@@ -151,7 +151,7 @@ int main(){
         sVTransmissions = leerTransmisiones();
 
         // Abrir el archivo de Salida
-        ifChecking.open("checking.txt", ios::in);
+        ifChecking.open("checking.txt");
         if (ifChecking.fail()){ // Si falla, terminar el programa
             throw runtime_error("Hubo un Error al cargar el archivo checking.txt");
         }
