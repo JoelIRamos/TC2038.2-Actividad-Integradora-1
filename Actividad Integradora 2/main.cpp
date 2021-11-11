@@ -49,23 +49,20 @@ int main(){
         mapa[ia][ib] = c;
         mapa[ib][ia] = c;
     }
-    
-    system("pause");
-    return 0;
-}
 
-
-/*
-
-cout << "-------------------------" << endl;
+    /*
+    // Imprimir lo leido
+    cout << "-------------------------" << endl;
 
     for (int i = 0; i < n; i++){
         cout << i << " -> " << colonias[i].nombre << " " << colonias[i].x << " " << colonias[i].y << " " << colonias[i].central << endl;
     }
-    
+    */
+
+    /*
+    // Imrpimir las conexiones en la matriz
     cout << "-------------------------" << endl;
 
-    // Imrpimir las conexiones
     cout << "   ";
     for (int i = 0; i < n; i++){
         cout << i << "  ";
@@ -79,5 +76,19 @@ cout << "-------------------------" << endl;
         }
         cout << endl;
     }
+    */
+    
+    system("pause");
+    return 0;
+}
+
+
+/*
+
+
+
+    
+    
+    
 
 */
