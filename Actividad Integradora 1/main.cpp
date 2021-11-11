@@ -1,3 +1,15 @@
+/*
+
+Actividad Integradora 1
+
+Erik Josías González Lucas A01424067
+Adrian Luevanos Castillo A00827701
+Joel Isaí Ramos Hernández A01245083
+
+29/09/2021
+
+*/
+
 #include <iostream>
 #include <string>
 #include <vector>
@@ -52,7 +64,7 @@ vector<string> leerTransmisiones(){
 }
 
 // Funcion para buscar todas las coincidencias de los archivos de transmision
-// Complejidad: O()
+// Complejidad: O(n*m)
 void coincidencias(ofstream& ifChecking, vector<string> codigosMaliciosos, vector<string> sVTransmissions){
     // Para cada codigo
     for (int i = 0; i < codigosMaliciosos.size(); i++){
@@ -77,7 +89,7 @@ void coincidencias(ofstream& ifChecking, vector<string> codigosMaliciosos, vecto
 }
 
 // Funcion para buscar el palindromo mas grande de cada archivo de transmision
-// Complejidad: O()
+// Complejidad: O(n)
 void palindromo(ofstream& ifChecking, vector<string> sVTransmissions){
     // Para cada archivo de transmision
     for (int i = 0; i < N; i++){
@@ -97,27 +109,31 @@ void palindromo(ofstream& ifChecking, vector<string> sVTransmissions){
 }
 
 // Funcion para encontrar el substring más largo de todos los archivos
-// Complejidad: O()
+// Complejidad: O(n*m)
 void substring(ofstream& ifChecking, vector<string> sVTransmissions){
-    string LCS;
     string subStr1;
     string subStr2;
-    int m = 0;
     for (int i = 0; i < N; i++){
         if (i+1 == N){
             algoritmos :: longestSubString(sVTransmissions[0], sVTransmissions[i], subStr1);
             algoritmos :: longestSubString(sVTransmissions[i], sVTransmissions[0], subStr2);
+            if (subStr1 == subStr2){
+                ifChecking << "Longest Substring transmission0.txt <--> transmission" << i+1 << ".txt: " << subStr1 << endl;
+            } else {
+                ifChecking << "Longest Substring transmission0.txt <-- transmission" << i+1 << ".txt: " << subStr1 << endl;
+                ifChecking << "Longest Substring transmission" << i+1 << ".txt <-- transmission0.txt: " << subStr2 << endl;
+            }
         } else {
             algoritmos :: longestSubString(sVTransmissions[i], sVTransmissions[i+1], subStr1);
             algoritmos :: longestSubString(sVTransmissions[i+1], sVTransmissions[i], subStr2);
-        }
-        subStr1 = ((subStr1.length() > subStr2.length()) ? subStr1 : subStr2);
-        if (subStr1.length() > m){
-            m = subStr1.length();
-            LCS = subStr1;
+            if (subStr1 == subStr2){
+                ifChecking << "Longest Substring transmission" << i+1 << ".txt <--> transmission" << i+2 << ".txt: " << subStr1 << endl;
+            } else {
+                ifChecking << "Longest Substring transmission" << i+1 << ".txt <-- transmission" << i+2 << ".txt: " << subStr1 << endl;
+                ifChecking << "Longest Substring transmission" << i+2 << ".txt <-- transmission" << i+1 << ".txt: " << subStr2 << endl;
+            }
         }
     }
-    ifChecking << LCS << endl;
 }
 
 
@@ -135,7 +151,7 @@ int main(){
         sVTransmissions = leerTransmisiones();
 
         // Abrir el archivo de Salida
-        ifChecking.open("checking.txt", ios::in);
+        ifChecking.open("checking.txt");
         if (ifChecking.fail()){ // Si falla, terminar el programa
             throw runtime_error("Hubo un Error al cargar el archivo checking.txt");
         }
@@ -153,7 +169,7 @@ int main(){
     palindromo(ifChecking, sVTransmissions);
     
     // *Substring más largo
-    ifChecking << "Longest Substring: ";
+    ifChecking << "Longest Substrings " << endl;
     substring(ifChecking, sVTransmissions);
 
     // Cerrar el archivo de salida y termina el programa
