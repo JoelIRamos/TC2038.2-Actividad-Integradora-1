@@ -2,34 +2,50 @@
 #include <string>
 #include <vector>
 #include <cmath>
+#include <float.h>
 #include <unordered_map>
+#include <unordered_set>
+#include <algorithm>
+#include <fstream>
 
 using namespace std;
 
 #include "Colonia.hpp"
+#include "Graph.hpp"
 #include "algoritmos.hpp"
 
 
 int main(){
+    // * 1: Leer entrada estandar
     // n = numero de colonias, m = numero de conexiones entre colonias, futuras nuevas colonias que se desean conectar.
     int n, m, q; 
     cin >> n >> m >> q;
 
     // Vector de colonias
     vector<colonia> colonias(n);
+
     // Hash de colonias
     unordered_map<string, int> coloniasHash(n);
 
-    // Matriz de Adjacencia
-    vector<vector<int>> mapa(n, vector<int>(n, -1));
+    // Matriz de adyacencia (con -1 como valor por defecto)
+    vector<vector <double> > mapa(n, vector<double>(n, -1));
+    
+    // Matrices de Adjacencias (con max como valor por defecto): Algoritmos de Floyd
+    vector< vector <double> > mat(n, vector<double>(n, DBL_MAX));
 
-    // Leer las colonias
+    // Matriz de transicion para Algoritmo de Floyd
+    vector< vector <int> > p(n, vector<int>(n, -1));
+
+    // Grafo para Kruskal
+    Graph g(n,m);
+
+    // 1.1: Leer las colonias
     for (int i = 0; i < n; i++) {
         cin >> colonias[i].nombre >> colonias[i].x >> colonias[i].y >> colonias[i].central;
         coloniasHash[colonias[i].nombre] = i;
     }
 
-    // Leer las conexiones
+    // 1.2: Leer las conexiones
     for (int i = 0; i < m; i++) {
         // Colonias con una conexion
         string a, b;
@@ -39,45 +55,57 @@ int main(){
         // Leer la conexion
         cin >> a >> b >> c;
 
+
         // Buscar el id de las colonias
         int ia = coloniasHash[a];
         int ib = coloniasHash[b];
 
-        // Guardar la conexion en la matriz
-        mapa[ia][ib] = c;
-        mapa[ib][ia] = c;
+        // Guardar la conexion en las matrices
+        mapa[ia][ib] = mapa[ib][ia] = c;
+        mat[ia][ib] = mat[ib][ia] = c;
+        g.addEdge(ia, ib, c);
+    }
+
+    // Abir el archivo de salida
+    ofstream out("salida.txt");
+    // Si no se pudo abrir el archivo de salida, terminar
+    if (out.fail()) {
+        cout << "No se pudo abrir el archivo de salida" << endl;
+        return 0;
     }
 
     
-    // Imprimir las colonias
-    cout << "-------------------------" << endl;
+    // * 2: Desplegar cuál es la forma óptima de cablear con una nueva fibra óptica conectando colonias de tal forma que se pueda compartir información entre cuales quiera dos colonias en el menor costo pósible
 
-    for (int i = 0; i < n; i++){
-        cout << i << " -> " << colonias[i].nombre << " " << colonias[i].x << " " << colonias[i].y << " " << colonias[i].central << endl;
-    }
-    cout << "-------------------------" << endl;
-    /**/
+    out << "1 – Cableado óptimo de nueva conexión." << endl << endl;
 
-    /**/
-    // Imrpimir las conexiones en la matriz
-    cout << "-------------------------" << endl;
+    g.kruskalMST();
+    out << g.printEdgesK(colonias, mapa) << endl;
+    out << "Costo Total = " << g.costMSTKruskal << endl << endl;
 
-    cout << "   ";
-    for (int i = 0; i < n; i++){
-        cout << i << "  ";
-    }
-    cout << endl;
+    // * 3 : Problema del viajero del grafo filtrado por colonias no centrales
+    out << "2 – La ruta óptima es:" << endl << endl;
 
-    for (int i = 0; i < n; i++) {
-        cout << i << ": ";
-        for (int j = 0; j < n; j++) {
-            cout << mapa[i][j] << " ";
-        }
-        cout << endl;
-    }
-    cout << "-------------------------" << endl;
+    // TODO: Filtrar el grafo dejando las colonias no centrales
+    // TODO: Hacer Problema del viajero
+    // TODO: Intertar la solucuin en out
 
-    // Leer y analizar las nuevas colonias
+    out << endl;
+
+    // * 4: Ruta optima para ir de todas las centrales entre si
+    out << "3 – Caminos más cortos entre centrales" << endl << endl;
+    
+    // TODO: Filtrar el grafo dejando las colonias centrales
+    
+    algoritmos :: floyd(mat, p, n);
+    // algoritmos :: print(mat, p, n);
+
+    // TODO: HACER COLSULTA CORRECTA Y GUARDAR EN OUT
+    // algoritmos :: consultas(mat, p, colonias, n);
+    out << endl;
+
+    // * 5: Leer y analizar las nuevas colonias
+    out << "4 – Conexión de nuevas colonias" << endl << endl;
     for (int i = 0; i < q; i++) {
         // Colonias con una conexion
         string nombre;
@@ -92,11 +120,11 @@ int main(){
 
         // Buscar la colonia para conectarla
         colonia coloniaCercana = algoritmos :: coloniaMinimaDistancia(nueva, colonias);
-        cout << "Colonia cercana: " << coloniaCercana.nombre << endl;
+        out << nueva.nombre << " debe conectarse con " << coloniaCercana.nombre << endl;
     }
     
     
-    // system("pause");
+    system("pause"); // Pausa para revisar que termino correctamente el programa
     return 0;
 }
 
@@ -118,10 +146,4 @@ Tecnologico AltaVista 15
 Roma AltaVista 18
 Independencia 180 -15
 Roble 45 68
-
-
-    
-    
-    
-
 */
