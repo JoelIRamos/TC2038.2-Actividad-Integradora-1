@@ -86,22 +86,22 @@ int main(){
     // * 3 : Problema del viajero del grafo filtrado por colonias no centrales
     out << "2 – La ruta óptima es:" << endl << endl;
 
-    // TODO: Filtrar el grafo dejando las colonias no centrales
-    // TODO: Hacer Problema del viajero
-    // TODO: Intertar la solucuin en out
+    // TODO: Hacer Problema del viajero para colonias no centrales
+    // TODO: Insertar la solucuin en out
 
     out << endl;
 
     // * 4: Ruta optima para ir de todas las centrales entre si
     out << "3 – Caminos más cortos entre centrales" << endl << endl;
-    
-    // TODO: Filtrar el grafo dejando las colonias centrales
-    
-    algoritmos :: floyd(mat, p, n);
-    // algoritmos :: print(mat, p, n);
 
-    // TODO: HACER COLSULTA CORRECTA Y GUARDAR EN OUT
-    // algoritmos :: consultas(mat, p, colonias, n);
+    // ToDo: Modificar el algoritmo de Floyd para que use solamente las centrales
+    algoritmos :: floyd(mat, p, n, colonias);
+    algoritmos :: print(mat, p, n);
+    
+    // ToDo: Buscar como hacer que se despliegue el camino completo en out
+    algoritmos :: consultas(mat, p, colonias, n, out);
+    
+    
     out << endl;
 
     // * 5: Leer y analizar las nuevas colonias

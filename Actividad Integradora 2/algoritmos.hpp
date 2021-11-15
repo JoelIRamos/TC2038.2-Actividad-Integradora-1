@@ -9,6 +9,7 @@ namespace algoritmos {
     #include <unordered_map>
     #include <algorithm>
     #include <unordered_set>
+    #include <fstream>
     
     using namespace std;
 
@@ -36,7 +37,7 @@ namespace algoritmos {
     // * Funciones para el inciso 4
 
     // Complejidad: O(n^3)
-    void floyd(vector< vector <double> >& mat, vector< vector <int> >& p, int n){
+    void floyd(vector< vector <double> >& mat, vector< vector <int> >& p, int n, vector<colonia> colonias){
         for (int k = 0; k < n; k++){
             for (int i = 0; i < n; i++){
                 for (int j = 0; j < n; j++){
@@ -49,24 +50,24 @@ namespace algoritmos {
         }
     }
 
-    void checarTrayectoria(vector< vector <int> >& p, int a, int b, vector<colonia> colonias){
+    void checarTrayectoria(vector< vector <int> >& p, int a, int b, vector<colonia> colonias, ofstream& out){
         if (p[a][b] != -1){
-            checarTrayectoria(p, a, p[a][b], colonias);
-            cout << colonias[(p[a][b])].nombre << "-";
-            checarTrayectoria(p, p[a][b], b, colonias);
+            checarTrayectoria(p, a, p[a][b], colonias, out);
+            out << colonias[(p[a][b])].nombre << "-";
+            checarTrayectoria(p, p[a][b], b, colonias, out);
         }
     }
 
-    void consultas(vector< vector <double> >& mat, vector< vector <int> >& p, vector<colonia> colonias, int n){
+    void consultas(vector< vector <double> >& mat, vector< vector <int> >& p, vector<colonia> colonias, int n, ofstream& out){
         int a = 0, b = n-1;
-        cout << n << endl;
+        out << n << endl;
         // return;
         if (mat[a][b] == DBL_MAX){
-            cout << "no path" << endl;
+            out << "no path" << endl;
         } else {
-            cout << "Costo: " << mat[a][b] << "\nPath: " << colonias[a].nombre << "-";
-            checarTrayectoria(p, a, b, colonias);
-            cout << colonias[b].nombre << endl << endl;
+            out << "Costo: " << mat[a][b] << "\nPath: " << colonias[a].nombre << "-";
+            checarTrayectoria(p, a, b, colonias, out);
+            out << colonias[b].nombre << endl << endl;
         }
     }
 
@@ -74,7 +75,11 @@ namespace algoritmos {
         cout << "matriz de costos" << endl;
         for (int i = 0; i < n; i++){
             for (int j = 0; j < n; j++){
-                cout << mat[i][j] << "\t";
+                if (mat[i][j] == DBL_MAX){
+                    cout << "INF\t";
+                } else {
+                    cout << mat[i][j] << "\t";
+                }
             }
             cout << endl;
         }
@@ -88,5 +93,4 @@ namespace algoritmos {
         }
     }
 
-    
 }
