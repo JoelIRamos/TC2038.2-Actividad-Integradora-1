@@ -12,6 +12,9 @@ Costo Total = 90
 
 3 – Caminos más cortos entre centrales
 
+Costo: 35
+Path: LindaVista-Roma-AltaVista
+
 
 4 – Conexión de nuevas colonias
 

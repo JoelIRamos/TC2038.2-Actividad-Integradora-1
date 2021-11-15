@@ -60,7 +60,7 @@ namespace algoritmos {
 
     void consultas(vector< vector <double> >& mat, vector< vector <int> >& p, vector<colonia> colonias, int n, ofstream& out){
         int a = 0, b = n-1;
-        out << n << endl;
+        // out << n << endl;
         // return;
         if (mat[a][b] == DBL_MAX){
             out << "no path" << endl;

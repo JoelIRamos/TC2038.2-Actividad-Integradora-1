@@ -96,7 +96,7 @@ int main(){
 
     // ToDo: Modificar el algoritmo de Floyd para que use solamente las centrales
     algoritmos :: floyd(mat, p, n, colonias);
-    algoritmos :: print(mat, p, n);
+    algoritmos :: print(mat, p, n); // Imprimir para debuggeo
     
     // ToDo: Buscar como hacer que se despliegue el camino completo en out
     algoritmos :: consultas(mat, p, colonias, n, out);
