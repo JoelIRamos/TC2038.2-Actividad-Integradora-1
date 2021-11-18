@@ -53,21 +53,18 @@ namespace algoritmos {
     void checarTrayectoria(vector< vector <int> >& p, int a, int b, vector<colonia> colonias, ofstream& out){
         if (p[a][b] != -1){
             checarTrayectoria(p, a, p[a][b], colonias, out);
-            out << colonias[(p[a][b])].nombre << "-";
+            out << colonias[(p[a][b])].nombre << " - ";
             checarTrayectoria(p, p[a][b], b, colonias, out);
         }
     }
 
-    void consultas(vector< vector <double> >& mat, vector< vector <int> >& p, vector<colonia> colonias, int n, ofstream& out){
-        int a = 0, b = n-1;
-        // out << n << endl;
-        // return;
+    void consultas(vector< vector <double> >& mat, vector< vector <int> >& p, vector<colonia> colonias, int a, int b, ofstream& out){
         if (mat[a][b] == DBL_MAX){
             out << "no path" << endl;
         } else {
-            out << "Costo: " << mat[a][b] << "\nPath: " << colonias[a].nombre << "-";
+            out << colonias[a].nombre << " - ";
             checarTrayectoria(p, a, b, colonias, out);
-            out << colonias[b].nombre << endl << endl;
+            out << colonias[b].nombre << " (" << mat[a][b] << ")" << endl;
         }
     }
 

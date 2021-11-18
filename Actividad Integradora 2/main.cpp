@@ -67,7 +67,7 @@ int main(){
     }
 
     // Abir el archivo de salida
-    ofstream out("salida.txt");
+    ofstream out("checking2.txt");
     // Si no se pudo abrir el archivo de salida, terminar
     if (out.fail()) {
         cout << "No se pudo abrir el archivo de salida" << endl;
@@ -76,15 +76,16 @@ int main(){
 
     
     // * 2: Desplegar cuál es la forma óptima de cablear con una nueva fibra óptica conectando colonias de tal forma que se pueda compartir información entre cuales quiera dos colonias en el menor costo pósible
-
+    out << "-------------------" << endl;
     out << "1 – Cableado óptimo de nueva conexión." << endl << endl;
 
     g.kruskalMST();
     out << g.printEdgesK(colonias, mapa) << endl;
-    out << "Costo Total = " << g.costMSTKruskal << endl << endl;
+    out << "Costo Total: " << g.costMSTKruskal << endl << endl;
 
     // * 3 : Problema del viajero del grafo filtrado por colonias no centrales
-    out << "2 – La ruta óptima es:" << endl << endl;
+    out << "-------------------" << endl;
+    out << "2 – La ruta óptima." << endl << endl;
 
     // TODO: Hacer Problema del viajero para colonias no centrales
     // TODO: Insertar la solucuin en out
@@ -92,20 +93,29 @@ int main(){
     out << endl;
 
     // * 4: Ruta optima para ir de todas las centrales entre si
-    out << "3 – Caminos más cortos entre centrales" << endl << endl;
+    out << "-------------------" << endl;
+    out << "3 – Caminos más cortos entre centrales." << endl << endl;
 
-    // ToDo: Modificar el algoritmo de Floyd para que use solamente las centrales
     algoritmos :: floyd(mat, p, n, colonias);
-    algoritmos :: print(mat, p, n); // Imprimir para debuggeo
+    // algoritmos :: print(mat, p, n); // Imprimir para debuggeo
     
-    // ToDo: Buscar como hacer que se despliegue el camino completo en out
-    algoritmos :: consultas(mat, p, colonias, n, out);
-    
-    
+    // Imprimir las rutas optimas entre centrales
+    for (int i = 0; i < colonias.size()-1; i++){
+        if (colonias[i].central){
+            for (int j = i+1; j < colonias.size(); j++){
+                if (colonias[j].central){
+                    algoritmos :: consultas(mat, p, colonias, i, j, out);
+                }
+            }
+        }
+        
+    }
     out << endl;
 
+
     // * 5: Leer y analizar las nuevas colonias
-    out << "4 – Conexión de nuevas colonias" << endl << endl;
+    out << "-------------------" << endl;
+    out << "4 – Conexión de nuevas colonias." << endl << endl;
     for (int i = 0; i < q; i++) {
         // Colonias con una conexion
         string nombre;
@@ -122,9 +132,11 @@ int main(){
         colonia coloniaCercana = algoritmos :: coloniaMinimaDistancia(nueva, colonias);
         out << nueva.nombre << " debe conectarse con " << coloniaCercana.nombre << endl;
     }
+    out << endl;
+    out << "-------------------" << endl;
     
     
-    system("pause"); // Pausa para revisar que termino correctamente el programa
+    // system("pause"); // Pausa para revisar que termino correctamente el programa
     return 0;
 }
 
