@@ -158,4 +158,6 @@ Tecnologico AltaVista 15
 Roma AltaVista 18
 Independencia 180 -15
 Roble 45 68
+
+.\main < in01.txt
 */

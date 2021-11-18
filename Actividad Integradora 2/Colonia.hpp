@@ -1,4 +1,3 @@
-// #pragma once
 #ifndef COLONIA_HPP
 #define COLONIA_HPP
 
