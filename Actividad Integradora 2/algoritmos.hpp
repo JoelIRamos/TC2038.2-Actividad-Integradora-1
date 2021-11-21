@@ -90,4 +90,68 @@ namespace algoritmos {
         }
     }
 
+    /* Función para el inciso 3 */
+    // Complejidad (E log V)
+    int dijks(vector <vector <int>> &matAdj, int &n, int &ini, int &fin, vector <colonia> colonias, vector <string> &path) {
+        int cost[n][n], distance[n], pred[n];
+        int visited[n], count, minDistance, nextnode, i, j;
+        int MAX = 9999;
+
+        for (i = 0; i < n; i++) {
+            for (j = 0; j < n; j++) {
+                if (matAdj[i][j] == 0) {
+                    cost[i][j] = MAX;
+                }
+                else {
+                    cost[i][j] = matAdj[i][j];
+                }   
+            }
+        }
+        for (i = 0; i < n; i++) {
+            distance[i] = cost[ini][i];
+            pred[i] = ini;
+            visited[i] = 0;
+        }
+        
+        distance[ini] = 0;
+        visited[ini] = 1;
+        count = 1;
+        while (count < n - 1) {
+            minDistance = MAX;
+            for (i = 0; i < n; i++)
+                if (distance[i] < minDistance && !visited[i])
+                {
+                    minDistance = distance[i];
+                    nextnode = i;
+                }
+            visited[nextnode] = 1;
+            for (i = 0; i < n; i++)
+                if (!visited[i])
+                    if (minDistance + cost[nextnode][i] < distance[i])
+                    {
+                        distance[i] = minDistance + cost[nextnode][i];
+                        pred[i] = nextnode;
+                    }
+            count++;
+        }
+
+        // Escríbimos las rutas
+        if (path.empty()) {
+            path.push_back(colonias[ini].nombre);
+        }
+        else if (!(path.back() == colonias[ini].nombre)) {
+            path.push_back(colonias[ini].nombre);
+        }
+        j = fin;
+        do {
+            j = pred[j];
+            if (colonias[j].nombre != colonias[ini].nombre && colonias[j].nombre != colonias[fin].nombre) {
+                path.push_back(colonias[j].nombre);
+            }
+        } while(j != ini);
+        path.push_back(colonias[fin].nombre);
+
+        return distance[fin];
+    }
+
 }

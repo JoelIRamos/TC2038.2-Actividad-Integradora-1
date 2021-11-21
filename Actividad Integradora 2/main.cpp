@@ -30,6 +30,12 @@ int main(){
     // Matriz de adyacencia (con -1 como valor por defecto)
     vector<vector <double> > mapa(n, vector<double>(n, -1));
     
+    // Matrix de adyacencia de tamaño m (con valor DBL_MAX como valor por defecto) *Punto 3* 
+    vector<vector <int> > matAdj(n*n, vector<int>(n*n, 0));
+
+    // Vector de colonias no centrales
+    vector <int> no_centrales;
+    
     // Matrices de Adjacencias (con max como valor por defecto): Algoritmos de Floyd
     vector< vector <double> > mat(n, vector<double>(n, DBL_MAX));
 
@@ -42,6 +48,9 @@ int main(){
     // 1.1: Leer las colonias
     for (int i = 0; i < n; i++) {
         cin >> colonias[i].nombre >> colonias[i].x >> colonias[i].y >> colonias[i].central;
+        if (!colonias[i].central) {
+            no_centrales.push_back(i);
+        }
         coloniasHash[colonias[i].nombre] = i;
     }
 
@@ -62,6 +71,7 @@ int main(){
 
         // Guardar la conexion en las matrices
         mapa[ia][ib] = mapa[ib][ia] = c;
+        matAdj[ia][ib] = matAdj[ib][ia] = (int) c;
         mat[ia][ib] = mat[ib][ia] = c;
         g.addEdge(ia, ib, c);
     }
@@ -87,10 +97,37 @@ int main(){
     out << "-------------------" << endl;
     out << "2 – La ruta óptima." << endl << endl;
 
-    // TODO: Hacer Problema del viajero para colonias no centrales
-    // TODO: Insertar la solucuin en out
+    // Vector con las rutas
+    vector <string> path;
+    // Para utilizarlo con el punto de origen. Nodo hacia donde vamos
+    int fin = 0;
+    // Score total del viaje
+    int current = 0;
+    for (int i = 0; i < no_centrales.size(); i++) {
+        // Aumentamos en 1 fin para ir al siguiente nodo
+        fin++;
 
-    out << endl;
+        // Ir del nodo final al principio
+        if (fin == no_centrales.size()) {
+            // Para ir al nodo de partida
+            fin = 0;
+            // Vamos con la matAdj, el número de nodos, el nodo de partida y el nodo al cuál vamos, colonias y la ruta
+            current += algoritmos :: dijks(matAdj, n, no_centrales[i], no_centrales[fin], colonias, path);
+        }
+
+        // Ir de un nodo al siguiente en la lista.
+        else {
+            current += algoritmos :: dijks(matAdj, n, no_centrales[i], no_centrales[fin], colonias, path);
+        }
+    }
+    for (int i = 0; i < path.size(); i++) {
+        out << path[i];
+        if (!(i == path.size() - 1)) {
+            out << " - ";
+        }
+    }
+    out << endl << endl;
+    out << "La Ruta Óptima tiene un costo total de: " << current << endl << endl;
 
     // * 4: Ruta optima para ir de todas las centrales entre si
     out << "-------------------" << endl;
