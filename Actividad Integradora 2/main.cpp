@@ -93,7 +93,7 @@ int main(){
     out << g.printEdgesK(colonias, mapa) << endl;
     out << "Costo Total: " << g.costMSTKruskal << endl << endl;
 
-    // * 3 : Problema del viajero del grafo filtrado por colonias no centrales
+    // * 3 : Problema del la ruta optima
     out << "-------------------" << endl;
     out << "2 – La ruta óptima." << endl << endl;
 
@@ -129,7 +129,7 @@ int main(){
     out << endl << endl;
     out << "La Ruta Óptima tiene un costo total de: " << current << endl << endl;
 
-    // * 4: Ruta optima para ir de todas las centrales entre si
+    // * 4: Rutas optimas para ir de todas las centrales entre si
     out << "-------------------" << endl;
     out << "3 – Caminos más cortos entre centrales." << endl << endl;
 
