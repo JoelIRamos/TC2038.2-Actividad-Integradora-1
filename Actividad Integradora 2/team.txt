@@ -1,0 +1,3 @@
+Joel Isaí Ramos Hernández A01245083 - Desarrollo de algortimo de floyd, Minima distancia a colonia, Distancia a colonia
+Adrian Luevanos Castillo A00827701 - Desarrollo de algrotimo de TSP 
+Erik Josías Gonzalez Lucas A01424067 - Desarrollo de Algoritmo de Dijkstra y TSP
